@@ -19,10 +19,8 @@ if (Meteor.isClient) {
     'submit .new-resolution': function(event) {
       var title = event.target.title.value;
 
-      Resolutions.insert({
-        title : title,
-        createdAt: new Date()
-      });
+      // call a mathod
+      Meteor.call("addResolution", title);
 
       //eliminating previews value from the field
       event.target.title.value = "";
@@ -56,3 +54,14 @@ if (Meteor.isServer) {
     // code to run on server at startup
   });
 }
+
+/* Methods that application will have access to in the client side 
+and will be able to block things based on user id (weather user is logged in) */
+Meteor.methods({
+  addResolution: function(title) {
+    Resolutions.insert({
+      title : title,
+      createdAt: new Date()
+    });
+  }
+});
