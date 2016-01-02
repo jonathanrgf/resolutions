@@ -19,7 +19,7 @@ if (Meteor.isClient) {
     'submit .new-resolution': function(event) {
       var title = event.target.title.value;
 
-      // call a mathod
+      // call a method to add new resolution passing title as parameter
       Meteor.call("addResolution", title);
 
       //eliminating previews value from the field
@@ -36,10 +36,11 @@ if (Meteor.isClient) {
   Template.resolution.events({
     // new event when checkbox is checked or unchecked
     'click .toggle-checked': function() {
-      Resolutions.update(this._id, {$set:{checked: !this.checked}})
+      Meteor.call("updateResolution", this._id, !this.checked)
     },
     'click .delete': function() {
-      Resolutions.remove(this._id);
+      // call method to remove resolution passing id of resolution as parameter
+      Meteor.call("deleteResolution", this._id);
     }
   });
 
@@ -58,10 +59,22 @@ if (Meteor.isServer) {
 /* Methods that application will have access to in the client side 
 and will be able to block things based on user id (weather user is logged in) */
 Meteor.methods({
+
+  // method to add new resolution
   addResolution: function(title) {
     Resolutions.insert({
       title : title,
       createdAt: new Date()
     });
+  },
+
+  // method to update checked list when checkbox is clicked
+  updateResolution: function(id, checked) {
+    Resolutions.update(id, {$set:{checked: checked}})
+  },
+
+  // method to remove resolution
+  deleteResolution: function(id) {
+    Resolutions.remove(id);
   }
 });
