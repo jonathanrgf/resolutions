@@ -1,6 +1,6 @@
 # Resolutions
 
-TODO: Write a project description
+Resolutions list that anybody can register to and add their private or public resolutions
 
 ## Installation
 
